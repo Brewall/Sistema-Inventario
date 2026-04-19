@@ -33,7 +33,7 @@ public class ProductoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Producto> obtenerProductoPorId(@PathVariable Long id) {
+    public ResponseEntity<Producto> obtenerProductoPorId(@PathVariable("id") Long id) {
         return productoService.obtenerPorId(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -54,7 +54,7 @@ public class ProductoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarProducto(@PathVariable Long id, @RequestBody Producto producto) {
+    public ResponseEntity<?> actualizarProducto(@PathVariable("id") Long id, @RequestBody Producto producto) {
         if (!esValido(producto)) {
             return ResponseEntity.badRequest().body("Datos inválidos: nombre, precio y stock son obligatorios");
         }
@@ -69,7 +69,7 @@ public class ProductoController {
     }
 
     @PatchMapping("/{id}/stock")
-    public ResponseEntity<?> actualizarStock(@PathVariable Long id, @RequestParam Integer stock) {
+    public ResponseEntity<?> actualizarStock(@PathVariable("id") Long id, @RequestParam("stock") Integer stock) {
         if (stock == null || stock < 0) {
             return ResponseEntity.badRequest().body("Stock inválido: debe ser un número mayor o igual a cero");
         }
@@ -84,13 +84,13 @@ public class ProductoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarProducto(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminarProducto(@PathVariable("id") Long id) {
         boolean eliminado = productoService.eliminar(id);
         return eliminado ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/buscar")
-    public ResponseEntity<List<Producto>> buscarPorNombre(@RequestParam(required = false) String nombre) {
+    public ResponseEntity<List<Producto>> buscarPorNombre(@RequestParam(value = "nombre", required = false) String nombre) {
         if (nombre == null || nombre.isBlank()) {
             return ResponseEntity.badRequest().build();
         }
@@ -99,7 +99,7 @@ public class ProductoController {
     }
 
     @GetMapping("/stock-bajo")
-    public ResponseEntity<List<Producto>> listarStockBajo(@RequestParam(required = false) Integer umbral) {
+    public ResponseEntity<List<Producto>> listarStockBajo(@RequestParam(value = "umbral", required = false) Integer umbral) {
         if (umbral == null || umbral < 0) {
             return ResponseEntity.badRequest().build();
         }
