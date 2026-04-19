@@ -44,14 +44,14 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<Usuario> buscarPorId(@PathVariable("id") Long id) {
         return usuarioService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminar(@PathVariable("id") Long id) {
         boolean eliminado = usuarioService.eliminar(id);
         return eliminado ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
