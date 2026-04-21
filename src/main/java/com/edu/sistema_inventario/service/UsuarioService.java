@@ -1,6 +1,7 @@
 package com.edu.sistema_inventario.service;
 
 import com.edu.sistema_inventario.model.Usuario;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,11 +16,21 @@ public class UsuarioService {
 
     private final Map<Long, Usuario> usuarios = new ConcurrentHashMap<>();
     private final AtomicLong secuenciaId = new AtomicLong(0);
+    private final PasswordEncoder passwordEncoder;
+
+    public UsuarioService(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public Usuario registrar(Usuario usuario) {
         validarUsuario(usuario);
+        if (buscarPorEmail(usuario.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Ya existe un usuario registrado con este email");
+        }
+
         Long id = secuenciaId.incrementAndGet();
         usuario.setId(id);
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         usuarios.put(id, usuario);
         return usuario;
     }
@@ -33,6 +44,15 @@ public class UsuarioService {
             return Optional.empty();
         }
         return Optional.ofNullable(usuarios.get(id));
+    }
+
+    public Optional<Usuario> buscarPorEmail(String email) {
+        if (email == null || email.isBlank()) {
+            return Optional.empty();
+        }
+        return usuarios.values().stream()
+                .filter(usuario -> email.equalsIgnoreCase(usuario.getEmail()))
+                .findFirst();
     }
 
     public boolean eliminar(Long id) {
