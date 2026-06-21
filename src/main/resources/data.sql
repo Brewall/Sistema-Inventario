@@ -1,0 +1,53 @@
+-- Datos de prueba iniciales para el Sistema de Inventario
+
+-- Limpiar datos para evitar duplicacion en contextos de prueba
+DELETE FROM refresh_tokens;
+DELETE FROM pedido_items;
+DELETE FROM pedidos;
+DELETE FROM productos;
+DELETE FROM categorias;
+DELETE FROM usuarios;
+
+-- Usuarios de prueba
+-- Password: password123 (BCrypt encoded)
+INSERT INTO USUARIOS (NOMBRE, APELLIDO, EMAIL, PASSWORD, ROL, ACTIVO, CREATED_AT)
+VALUES ('Admin', 'Sistema', 'admin@test.com', '$2a$10$G2mKBHVMKd7M1n8xyqyZ/esfNHtlI6vqy3qKBLFpAIz7Y4j5oRvLa', 'ADMIN', true, CURRENT_TIMESTAMP);
+
+INSERT INTO USUARIOS (NOMBRE, APELLIDO, EMAIL, PASSWORD, ROL, ACTIVO, CREATED_AT)
+VALUES ('Usuario', 'Prueba', 'usuario@test.com', '$2a$10$G2mKBHVMKd7M1n8xyqyZ/esfNHtlI6vqy3qKBLFpAIz7Y4j5oRvLa', 'USER', true, CURRENT_TIMESTAMP);
+
+-- Categorias de prueba
+INSERT INTO CATEGORIAS (NOMBRE, DESCRIPCION, ESTADO, ACTIVO, CREATED_AT)
+VALUES ('Electronica', 'Productos electronicos y gadgets', 'ACTIVA', true, CURRENT_TIMESTAMP);
+
+INSERT INTO CATEGORIAS (NOMBRE, DESCRIPCION, ESTADO, ACTIVO, CREATED_AT)
+VALUES ('Informatica', 'Computadoras, perifericos y accesorios', 'ACTIVA', true, CURRENT_TIMESTAMP);
+
+INSERT INTO CATEGORIAS (NOMBRE, DESCRIPCION, ESTADO, ACTIVO, CREATED_AT)
+VALUES ('Accesorios', 'Accesorios para dispositivos', 'ACTIVA', true, CURRENT_TIMESTAMP);
+
+-- Productos de prueba
+INSERT INTO PRODUCTOS (NOMBRE, DESCRIPCION, PRECIO, STOCK, CATEGORIA_ID, ACTIVO, CREATED_AT, VERSION)
+VALUES ('Laptop Dell XPS 15', 'Laptop de 15 pulgadas, procesador Intel i7, 16GB RAM', 1500.00, 5, 1, true, CURRENT_TIMESTAMP, 0);
+
+INSERT INTO PRODUCTOS (NOMBRE, DESCRIPCION, PRECIO, STOCK, CATEGORIA_ID, ACTIVO, CREATED_AT, VERSION)
+VALUES ('Monitor LG 27"', 'Monitor 4K, 60Hz, tipo panel IPS', 350.00, 12, 1, true, CURRENT_TIMESTAMP, 0);
+
+INSERT INTO PRODUCTOS (NOMBRE, DESCRIPCION, PRECIO, STOCK, CATEGORIA_ID, ACTIVO, CREATED_AT, VERSION)
+VALUES ('Teclado Mecanico RGB', 'Teclado mecanico con switches Cherry MX', 120.00, 20, 3, true, CURRENT_TIMESTAMP, 0);
+
+INSERT INTO PRODUCTOS (NOMBRE, DESCRIPCION, PRECIO, STOCK, CATEGORIA_ID, ACTIVO, CREATED_AT, VERSION)
+VALUES ('Mouse Logitech MX Master', 'Mouse inalambrico de precision', 99.99, 15, 3, true, CURRENT_TIMESTAMP, 0);
+
+INSERT INTO PRODUCTOS (NOMBRE, DESCRIPCION, PRECIO, STOCK, CATEGORIA_ID, ACTIVO, CREATED_AT, VERSION)
+VALUES ('Escritorio gamer', 'Escritorio resistente para gaming, 140x60cm', 280.00, 8, 2, true, CURRENT_TIMESTAMP, 0);
+
+INSERT INTO PRODUCTOS (NOMBRE, DESCRIPCION, PRECIO, STOCK, CATEGORIA_ID, ACTIVO, CREATED_AT, VERSION)
+VALUES ('Silla gaming', 'Silla gaming ergonomica con soporte lumbar', 250.00, 6, 2, true, CURRENT_TIMESTAMP, 0);
+
+-- Pedidos de prueba
+INSERT INTO PEDIDOS (USUARIO_ID, FECHA, TOTAL, ESTADO, ACTIVO, VERSION)
+VALUES (2, CURRENT_TIMESTAMP, 1600.00, 'PENDIENTE', true, 0);
+
+INSERT INTO PEDIDOS (USUARIO_ID, FECHA, TOTAL, ESTADO, ACTIVO, VERSION)
+VALUES (2, CURRENT_TIMESTAMP, 470.00, 'ENTREGADO', true, 0);
